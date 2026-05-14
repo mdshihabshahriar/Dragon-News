@@ -4,8 +4,15 @@ import Link from "next/link";
 import React from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { CiBookmark, CiShare2 } from "react-icons/ci";
-import { FaArrowRight, FaEye } from "react-icons/fa";
-import { IoIosStar } from "react-icons/io";
+
+export const generateMetadata = async ({ params }) => {
+  const { id } = await params;
+  const news = await getNewsDetailsById(id);
+  return {
+    title: news.title,
+    description: news.details,
+  };
+};
 
 const NewsDetailsPage = async ({ params }) => {
   const { id } = await params;
