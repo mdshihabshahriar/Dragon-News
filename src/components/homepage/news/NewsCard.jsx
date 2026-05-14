@@ -46,7 +46,7 @@ const NewsCard = ({ news }) => {
                 <h2 className="flex items-center gap-2" ><IoIosStar className='text-lg text-yellow-400'></IoIosStar>{news.rating.number}</h2>
                 <h2 className="flex items-center gap-2"><FaEye className='text-lg'></FaEye>{news.total_view}</h2>
             </div>
-            <Link href={`/news/${news.id}`}>
+            <Link href={`/news/${news._id}`}>
               <button className="btn btn-primary">See Details</button>
             </Link>
         </div>
