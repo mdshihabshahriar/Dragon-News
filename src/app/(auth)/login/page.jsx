@@ -1,11 +1,43 @@
-import React from 'react';
+'use client';
+import Link from "next/link";
+import React from "react";
+import { useForm } from "react-hook-form";
 
 const LoginPage = () => {
-    return (
-        <div>
-            login page
-        </div>
-    );
+
+    const {register, handleSubmit, formState: { errors }} = useForm();
+
+    const handleLoginFunc = (data)=>{
+        // e.preventDefault();
+        // const email = e.target.email.value;
+        // const password = e.target.password.value;
+        // console.log(email, password);
+        console.log(data);
+    }
+
+  return (
+    <div className="container mx-auto min-h-[80vh] flex items-center justify-center bg-slate-100">
+      <div className="p-4 rounded-xl bg-white">
+        <h2 className="text-xl text-center font-bold mb-6">Login your account</h2>
+        <form className="space-y-4" onSubmit={handleSubmit(handleLoginFunc)}>
+          <fieldset className="fieldset">
+            <legend className="fieldset-legend">Email</legend>
+            <input type="email" {...register("email", { required: "Email field is required" })} className="input" placeholder="Enter your email" />
+            {errors.email && <span className="text-red-500">{errors.email.message}</span>}
+          </fieldset>
+          <fieldset className="fieldset">
+            <legend className="fieldset-legend">Password</legend>
+            <input type="password" {...register("password", { required: "Password field is required" })} className="input" placeholder="Enter your password" />
+            {errors.password && <span className="text-red-500">{errors.password.message}</span>}
+          </fieldset>
+          <button className="btn w-full bg-slate-800 text-white">Login</button>
+        </form>
+        <p className="text-center mt-4">
+          Don't have an account? <Link href="/register" className="text-blue-500 hover:underline">Register</Link>
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default LoginPage;
