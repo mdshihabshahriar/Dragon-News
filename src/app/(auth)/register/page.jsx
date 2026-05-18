@@ -1,63 +1,111 @@
-'use client';
+"use client";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const RegisterPage = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-    const {register, handleSubmit, formState: { errors }} = useForm();
+  const [isShowPassword, setIsShowPassword] = useState(false);
 
-    const handleRegisterFunc = async (data)=> {
-        // e.preventDefault();
-        // const email = e.target.email.value;
-        // const password = e.target.password.value;
-        // console.log(email, password);
-        const {name, photoUrl, email, password} = data;
-        console.log(data);
+  const handleRegisterFunc = async (data) => {
+    // e.preventDefault();
+    // const email = e.target.email.value;
+    // const password = e.target.password.value;
+    // console.log(email, password);
+    const { name, photoUrl, email, password } = data;
+    console.log(data);
 
-        const {data:res, error}  = await authClient.signUp.email({
-            name: name, // required
-            email: email, // required
-            password: password, // required
-            image: photoUrl,
-            callbackURL: "/",
-        });
-        console.log(res, error);
-        if(error){
-            alert(error.message);
-        }
-        if(res){
-            alert("Registration successful!");
-        }
+    const { data: res, error } = await authClient.signUp.email({
+      name: name, // required
+      email: email, // required
+      password: password, // required
+      image: photoUrl,
+      callbackURL: "/",
+    });
+    console.log(res, error);
+    if (error) {
+      alert(error.message);
     }
+    if (res) {
+      alert("Registration successful!");
+    }
+  };
 
   return (
     <div className="container mx-auto min-h-[80vh] flex items-center justify-center bg-slate-100">
       <div className="p-4 rounded-xl bg-white">
-        <h2 className="text-xl text-center font-bold mb-6">Register your account</h2>
+        <h2 className="text-xl text-center font-bold mb-6">
+          Register your account
+        </h2>
         <form className="space-y-4" onSubmit={handleSubmit(handleRegisterFunc)}>
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Your Name</legend>
-            <input type="text" {...register("name", { required: "Name field is required" })} className="input" placeholder="Enter your name" />
-            {errors.name && <span className="text-red-500">{errors.name.message}</span>}
+            <input
+              type="text"
+              {...register("name", { required: "Name field is required" })}
+              className="input"
+              placeholder="Enter your name"
+            />
+            {errors.name && (
+              <span className="text-red-500">{errors.name.message}</span>
+            )}
           </fieldset>
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Photo URL</legend>
-            <input type="text" {...register("photoUrl", { required: "Photo URL field is required" })} className="input" placeholder="Enter your photo url" />
-            {errors.photoUrl && <span className="text-red-500">{errors.photoUrl.message}</span>}
+            <input
+              type="text"
+              {...register("photoUrl", {
+                required: "Photo URL field is required",
+              })}
+              className="input"
+              placeholder="Enter your photo url"
+            />
+            {errors.photoUrl && (
+              <span className="text-red-500">{errors.photoUrl.message}</span>
+            )}
           </fieldset>
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Email</legend>
-            <input type="email" {...register("email", { required: "Email field is required" })} className="input" placeholder="Enter your email" />
-            {errors.email && <span className="text-red-500">{errors.email.message}</span>}
+            <input
+              type="email"
+              {...register("email", { required: "Email field is required" })}
+              className="input"
+              placeholder="Enter your email"
+            />
+            {errors.email && (
+              <span className="text-red-500">{errors.email.message}</span>
+            )}
           </fieldset>
-          <fieldset className="fieldset">
+          <fieldset className="fieldset relative">
             <legend className="fieldset-legend">Password</legend>
-            <input type="password" {...register("password", { required: "Password field is required" })} className="input" placeholder="Enter your password" />
-            {errors.password && <span className="text-red-500">{errors.password.message}</span>}
+            <input
+              type={isShowPassword ? "text" : "password"}
+              {...register("password", {
+                required: "Password field is required",
+              })}
+              className="input"
+              placeholder="Enter your password"
+            />
+            <span
+              className="absolute right-2 top-4 cursor-pointer"
+              onClick={() => setIsShowPassword(!isShowPassword)}
+            >
+              {isShowPassword ? <FaEye /> : <FaEyeSlash />}
+            </span>
+            {errors.password && (
+              <span className="text-red-500">{errors.password.message}</span>
+            )}
           </fieldset>
-          <button className="btn w-full bg-slate-800 text-white">Register</button>
+          <button className="btn w-full bg-slate-800 text-white">
+            Register
+          </button>
         </form>
       </div>
     </div>
